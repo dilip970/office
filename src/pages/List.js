@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 
 class List extends Component {
@@ -19,6 +19,20 @@ class List extends Component {
             })
         })
     }
+    handleClick = async (userid) => {
+        const id = userid;
+        alert("Are you want to delete?")
+        return axios.delete("http://localhost:5000/api/delete-customer/" + id)
+            .then((res) => {
+                if (res.status == "200") {
+                    alert("Delete Successfully")
+                    window.location.reload();
+                    // this.props.history.push('/userdashboard')
+                } else {
+                    alert("Something went Wrong....")
+                }
+            })
+    }
     render() {
         let list = this.state.customer;
         list = (this.state.customer.map((customer, key) => {
@@ -29,8 +43,8 @@ class List extends Component {
                         <td>{customer.name}</td>
                         <td>{customer.email}</td>
                         <td>{customer.mobile}</td>
-                        <td><button  >EDIT</button></td>
-                        <td><button>DELETE</button></td>
+                        <td><Link as={Link} to={`/editlist/${customer.id}`}> <button  >EDIT</button></Link></td>
+                        <td> <button onClick={() => this.handleClick(customer.id)}>DELETE</button></td>
                     </tr>
                 </tbody>
             )

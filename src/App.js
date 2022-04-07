@@ -9,6 +9,7 @@ import './style.css';
 import Login from './pages/Login';
 import UserDashboard from './pages/UserDashboard';
 import List from './pages/List';
+import EditList from './pages/EditList';
 
 class App extends Component {
   render() {
@@ -24,6 +25,7 @@ class App extends Component {
             <Route exact path='/login' element={< Login />}></Route>
             <Route exact path='/userdashboard' element={< UserDashboard />}></Route>
             <Route exact path='/list' element={< List />}></Route>
+            <Route exact path='/editlist/:id' element={< EditList />}></Route>
           </Routes>
         </div>
       </Router>
