@@ -8,6 +8,7 @@ class EditList extends Component {
             name: '',
             email: '',
             mobile: '',
+            id: '',
         };
     }
 
@@ -22,29 +23,29 @@ class EditList extends Component {
         return axios.post("http://localhost:5000/api/get-customer-by-id", {
             id: 34,
         }).then((res) => {
-            let customer = res.data.data.product;
+            let data = res.data.data.customer_id_details[0];
             this.setState({
-                customer: customer,
+                name: data.name,
+                mobile: data.mobile,
+                email: data.email,
+                id: data.id
             })
         })
     }
     handleSubmit = e => {
         e.preventDefault();
-        const { name, email, mobile } = this.state
+        const { name, email, mobile, id } = this.state
         var formData = {
             name,
             email,
             mobile,
+            id: 34,
         };
-        return axios.post('http://localhost:5000/api/registration', { ...formData })
+        return axios.patch('http://localhost:5000/api/update-customer', { ...formData })
             .then((res) => {
                 if (res.data.status == "200") {
-                    alert("Your regsitartion is successfully completed....");
-                    window.location.href = '/signup';
-                } else if (res.data.status == "600") {
-                    alert("Password do not match....");
-                } else {
-                    alert("Email already registered....")
+                    alert("Your Update is successfully completed....");
+                    window.location.href = '/list';
                 }
             })
             .catch(err => {
@@ -68,16 +69,16 @@ class EditList extends Component {
 
                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <Form.Label>Name</Form.Label>
-                                    <Form.Control type="text" onChange={this.handleInputChange} name="name" placeholder="Enter your Name" />
+                                    <Form.Control type="text" value={this.state.name} onChange={this.handleInputChange} name="name" placeholder="Enter your Name" />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <Form.Label>Mobile</Form.Label>
-                                    <Form.Control type="number" onChange={this.handleInputChange} name="mobile" placeholder="Enter your Name" />
+                                    <Form.Control type="number" value={this.state.mobile} onChange={this.handleInputChange} name="mobile" placeholder="Enter your Name" />
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <Form.Label>Email address</Form.Label>
-                                    <Form.Control type="email" v onChange={this.handleInputChange} name='email' placeholder="Enter your email" />
+                                    <Form.Control type="email" value={this.state.email} onChange={this.handleInputChange} name='email' placeholder="Enter your email" />
                                 </Form.Group>
 
                                 <Button variant="primary" type="submit">
